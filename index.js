@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser'
 import cors from 'kcors'
 import 'babel-polyfill'
 import 'dotenv/config'
+import Sound from './app/api/Sound'
 
 const app = new Koa()
 const router = new Router({prefix: process.env.BASE_URI})
@@ -11,6 +12,7 @@ const router = new Router({prefix: process.env.BASE_URI})
 app.use(bodyParser())
 app.use(cors())
 
+router.use('/sound', Sound.routes())
 
 app.use(router.routes())
 app.use(router.allowedMethods())
