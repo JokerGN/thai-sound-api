@@ -2,6 +2,8 @@ import Router from 'koa-router'
 import JWT from 'jsonwebtoken'
 import UserRepository from '../resouce/user/user.repository'
 import RoleRepository from '../resouce/role/role.repository'
+import transporter from '../lib/nodemailer'
+import { error } from 'util';
 
 const Auth = new Router()
 
@@ -15,24 +17,64 @@ Auth.post('/gettoken', async function (context, next) {
 
 Auth.post('/register', async function (context, next) {
   let data = context.request.body
-  context.body = await UserRepository.findOrCreate({username: data.username}, {password: data.password, roleId: data.role})
+  let token = JWT.sign(data.email, sercetkey)
+  await UserRepository.findOrCreate({email: data.email},
+    {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+      citizenId: data.citizenId,
+      address: data.address,
+      token: token
+    })
+  .spread((user, created) => {
+    context.body = user.get({ plain: true })
+    if (created) {
+      let confirmUrl = 'http://www.chaluline.com:3001/confirm?token='+token
+      let message = {
+        to: data.email,
+        subject: 'test confirm register',
+        text: 'test register confirmation',
+        html: `<a href='${confirmUrl}'>ยืนยันการสมัครสมาชิก</a>`
+      }
+      transporter.sendMail(message, (error, info) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log(info.response)
+        }
+      })
+    }
+  })
 })
 
-Auth.post('/login', async function (context, next) {
-  let data = context.request.body
-  let response = await UserRepository.findBy({username: data.username})
-  if (data.password !== response[0].password) {
-    context.status = 401
-    context.body = {
-      status: context.status,
-      message: "Unauthorized"
+Auth.post('/confirm/:token', async function (context, next) {
+  let reciveToken = context.params.token
+  let decodedToken = null
+  JWT.verify(reciveToken, sercetkey, function (err, decoded) {
+    if (err) {
+      let error = {
+        name: err.name,
+        message: err.message
+      }
+      context.body = error
+    } else{
+      decodedToken = decoded
     }
-  } else {
-    context.status = 200
-    context.body = {
-      status: context.status,
-      message: response
-    }
+  })
+  if (decodedToken) {
+    await UserRepository.findBy({email: decodedToken})
+    .spread((user) => {
+      if (user.status == 'active' || user.status == 'block') {
+        let message = {
+          userStatus: user.status,
+          message: 'this user already active or block'
+        }
+        context.body = message
+      } else {
+        context.body = UserRepository.updateBy({email: decodedToken}, {status: 'active'})
+      }
+    })
   }
 })
 

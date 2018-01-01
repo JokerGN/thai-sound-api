@@ -7,7 +7,15 @@ let userModel = database.define('user', {
     autoIncrement: true,
     primaryKey: true
   },
-  username: {
+  firstName: {
+    type: Sequelize.STRING(100),
+    allowNull: false
+  },
+  lastName: {
+    type: Sequelize.STRING(100),
+    allowNull: false
+  },
+  email: {
     type: Sequelize.STRING(100),
     allowNull: false
   },
@@ -15,12 +23,25 @@ let userModel = database.define('user', {
     type: Sequelize.STRING(100),
     allowNull: false
   },
-  roleId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'role',
-      key: 'roleId'
-    }
+  citizenId: {
+    type: Sequelize.STRING(13),
+    allowNull: false
+  },
+  address: {
+    type: Sequelize.STRING(255),
+    allowNull: false
+  },
+  status: {
+    type: Sequelize.ENUM,
+    values: ['active', 'wait_for_active', 'block'],
+    defaultValue: ['wait_for_active']
+  },
+  token: {
+    type: Sequelize.STRING(255),
+    allowNull: false
+  },
+  loginAt: {
+    type: Sequelize.DATE
   },
   createdAt: {
     type: Sequelize.DATE,
