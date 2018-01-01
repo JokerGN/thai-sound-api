@@ -24,6 +24,7 @@
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
     "mysql2": "^1.5.1",
+    "nodemailer": "^4.4.1",
     "nodemon": "^1.13.3",
     "sequelize": "^4.28.6"
   }
