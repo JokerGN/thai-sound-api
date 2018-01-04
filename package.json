@@ -26,6 +26,7 @@
     "mysql2": "^1.5.1",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.13.3",
-    "sequelize": "^4.28.6"
+    "sequelize": "^4.28.6",
+    "validate.js": "^0.12.0"
   }
 }
