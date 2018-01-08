@@ -9,5 +9,8 @@ export const database = new Sequelize(process.env.DB_NAME, process.env.DB_USER, 
     min: 0,
     max: 15
   },
-  logging: false
+  logging: false,
+  dialectOptions: {
+    socketPath: process.env.DB_SOCKET
+  }
 })
