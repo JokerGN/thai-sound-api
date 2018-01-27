@@ -15,7 +15,7 @@ Auth.post('/register', async function (context, next) {
   let data = context.request.body
   let error = validate(data, registerConstraints, {format: 'flat'})
   if (!error) {
-    let rawToken = JWT.sign(data.email, sercetkey)
+    let token = JWT.sign(data.email, sercetkey)
     await UserRepository.findOrCreate({email: data.email},
       {
         firstName: data.firstName,
