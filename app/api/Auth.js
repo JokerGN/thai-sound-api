@@ -23,11 +23,12 @@ Auth.post('/register', async function (context, next) {
         password: data.password,
         citizenId: data.citizenId,
         address: data.address,
-        token: token
+        token: token,
+        loginAt: '0000-00-00 00:00:00'
       })
     .spread((user, created) => {
       if (created) {
-        let confirmUrl = "http://localhost:3001/auth/confirm/"+token
+        let confirmUrl = "http://thai-sound-api.chalueline.com/auth/confirm/"+token
         let message = {
           to: data.email,
           subject: 'ยืนยันการสมัครสมาชิก Thaisound',
@@ -110,6 +111,7 @@ Auth.post('/login', async function (context, next) {
   let data = context.request.body
   let error = validate(data, loginConstraints, {format: 'flat'})
   if (!error) {
+    await UserRepository.updateBy({email: data.email}, {loginAt: new Date()})
     context.body = await UserRepository.findBy({email: data.email})
   } else {
     context.status = 401
