@@ -28,7 +28,7 @@ Auth.post('/register', async function (context, next) {
       })
     .spread((user, created) => {
       if (created) {
-        let confirmUrl = "http://thai-sound-api.chaluline.com/auth/confirm/"+token
+        let confirmUrl = process.env.BASE_URI+"auth/confirm/"+token
         let message = {
           to: data.email,
           subject: 'ยืนยันการสมัครสมาชิก Thaisound',
@@ -102,6 +102,7 @@ Auth.get('/confirm/:token', async function (context, next) {
         context.body = message
       } else {
         context.body = UserRepository.updateBy({email: decodedToken}, {status: 'active'})
+        context.redirect(process.env.BASE_URI)
       }
     })
   }
