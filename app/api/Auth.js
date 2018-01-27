@@ -6,6 +6,7 @@ import { error } from 'util'
 import registerConstraints from '../lib/validate/registerValidate'
 import loginConstraints from '../lib/validate/loginValidate'
 import validate from 'validate.js'
+import 'dotenv/config'
 
 const Auth = new Router()
 
@@ -100,6 +101,7 @@ Auth.get('/confirm/:token', async function (context, next) {
           message: 'this user already active or block'
         }
         context.body = message
+        context.redirect(process.env.BASE_URI)
       } else {
         context.body = UserRepository.updateBy({email: decodedToken}, {status: 'active'})
         context.redirect(process.env.BASE_URI)
