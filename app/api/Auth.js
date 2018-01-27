@@ -15,7 +15,7 @@ Auth.post('/register', async function (context, next) {
   let data = context.request.body
   let error = validate(data, registerConstraints, {format: 'flat'})
   if (!error) {
-    let token = JWT.sign(data.email, sercetkey)
+    let rawToken = JWT.sign(data.email, sercetkey)
     await UserRepository.findOrCreate({email: data.email},
       {
         firstName: data.firstName,
@@ -28,7 +28,7 @@ Auth.post('/register', async function (context, next) {
       })
     .spread((user, created) => {
       if (created) {
-        let confirmUrl = "http://thai-sound-api.chalueline.com/auth/confirm/"+token
+        let confirmUrl = "http://thai-sound-api.chaluline.com/auth/confirm/"+token
         let message = {
           to: data.email,
           subject: 'ยืนยันการสมัครสมาชิก Thaisound',
