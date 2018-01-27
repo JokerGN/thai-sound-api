@@ -9,7 +9,7 @@ import Feeling from './app/api/Feeling'
 import User from './app/api/User'
 
 const app = new Koa()
-const router = new Router({prefix: process.env.BASE_URI})
+const router = new Router()
 
 app.use(bodyParser())
 app.use(cors())
