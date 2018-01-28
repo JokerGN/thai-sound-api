@@ -31,6 +31,11 @@ let userModel = database.define('user', {
     type: Sequelize.STRING(255),
     allowNull: false
   },
+  role: {
+    type: Sequelize.ENUM,
+    values: ['admin','user'],
+    defaultValue: ['user']
+  },
   status: {
     type: Sequelize.ENUM,
     values: ['active', 'wait_for_active', 'block'],
