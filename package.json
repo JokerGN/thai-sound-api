@@ -6,6 +6,7 @@
   "scripts": {
     "start": "pm2 start index.js --name='thai-sound-api' --interpreter babel-node",
     "stop": "pm2 stop thai-sound-api",
+    "logs": "pm2 logs thai-sound-api",
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
