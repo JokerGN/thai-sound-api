@@ -101,10 +101,10 @@ Auth.get('/confirm/:token', async function (context, next) {
           message: 'this user already active or block'
         }
         context.body = message
-        context.redirect(process.env.BASE_URI)
+        context.redirect('http://thai-sound.chaluline.com')
       } else {
         context.body = UserRepository.updateBy({email: decodedToken}, {status: 'active'})
-        context.redirect(process.env.BASE_URI)
+        context.redirect('http://thai-sound.chaluline.com')
       }
     })
   }
