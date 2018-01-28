@@ -9,6 +9,9 @@
 # production
 /build
 
+#filestorage
+/uploads
+
 # misc
 .DS_Store
 .env.local

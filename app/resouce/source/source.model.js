@@ -1,22 +1,15 @@
 import Sequelize from 'sequelize'
 import {database} from '../database'
 
-let feelingModel = database.define('feeling', {
-  feelingId: {
+let sourceModel = database.define('source', {
+  sourceId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  feelingName: {
-    type: Sequelize.STRING(100),
+  sourceName: {
+    type: Sequelize.STRING(255),
     allowNull: false
-  },
-  typeId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'type',
-      key: 'typeId'
-    }
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -29,11 +22,11 @@ let feelingModel = database.define('feeling', {
     type: Sequelize.DATE
   }
 }, {
-  tableName: 'feeling',
+  tableName: 'source',
   freezeTableName: true,
   paranoid: true
 })
 
-export default feelingModel
+export default sourceModel
 
 

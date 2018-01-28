@@ -7,17 +7,21 @@ import Sound from './app/api/Sound'
 import Auth from './app/api/Auth'
 import Feeling from './app/api/Feeling'
 import User from './app/api/User'
+import Type from './app/api/Type'
 
 const app = new Koa()
 const router = new Router()
 
-app.use(bodyParser())
+app.use(bodyParser({
+  formLimit: "10mb"
+}))
 app.use(cors())
 
 router.use('/sound', Sound.routes())
 router.use('/auth', Auth.routes())
 router.use('/feeling', Feeling.routes())
 router.use('/user', User.routes())
+router.use('/type', Type.routes())
 
 app.use(router.routes())
 app.use(router.allowedMethods())
