@@ -5,7 +5,11 @@ const Feeling = new Router()
 
 Feeling.post('/add_feeling', async function (context, next) {
   let data = context.request.body
-  context.body = await FeelingRepository.findOrCreate({feelingName: data.feeling})
+  let obj = {
+    feelingName: data.feeling,
+    typeId: data.type
+  }
+  context.body = await FeelingRepository.findOrCreate(obj)
 })
 
 export default Feeling

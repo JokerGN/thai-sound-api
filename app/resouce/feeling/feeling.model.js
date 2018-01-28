@@ -11,6 +11,13 @@ let feelingModel = database.define('feeling', {
     type: Sequelize.STRING(100),
     allowNull: false
   },
+  typeId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'type',
+      key: 'typeId'
+    }
+  },
   createdAt: {
     type: Sequelize.DATE,
     allowNull: false
