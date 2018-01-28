@@ -10,6 +10,7 @@ export const database = new Sequelize(process.env.DB_NAME, process.env.DB_USER, 
   },
   logging: false,
   dialectOptions: {
-    socketPath: process.env.DB_SOCKET
+    socketPath: process.env.DB_SOCKET,
+    charset: 'tis620'
   }
 })
