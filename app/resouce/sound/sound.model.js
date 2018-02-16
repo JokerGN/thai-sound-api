@@ -49,10 +49,6 @@ let soundModel = database.define('sound', {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
-  createdAt: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
   teenageMean: {
     type: Sequelize.DOUBLE,
     allowNull: false
@@ -67,6 +63,10 @@ let soundModel = database.define('sound', {
   },
   oldmanSD: {
     type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  createdAt: {
+    type: Sequelize.DATE,
     allowNull: false
   },
   updatedAt: {
