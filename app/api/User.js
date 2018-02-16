@@ -23,4 +23,30 @@ User.post('/delete', async function (context,next) {
   context.body = await UserRepository.deleteBy({email: data.email})
 })
 
+User.post('/change_status', async function (context, next) {
+  let data = context.request.body
+  await UserRepository.findBy({email: data.email})
+  .spread((user) => {
+    if (user) {
+      if (user.status == 'block') {
+        UserRepository.updateBy({email: data.email}, {status: 'active'})
+        UserRepository.updateBy({email: data.email}, {status: 'active'})
+      } else {
+        UserRepository.updateBy({email: data.email}, {status: 'block'})
+      }
+      context.status = 200
+      context.body = {
+        status: context.status,
+        message: 'Status change'
+      }
+    } else {
+      context.status = 404
+      context.body = {
+        status: context.status,
+        message: 'User not found'
+      }
+    }
+  })
+})
+
 export default User
