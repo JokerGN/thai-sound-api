@@ -8,4 +8,8 @@ Type.post('/add_type', async function (context, next) {
   context.body = await TypeRepository.findOrCreate({typeName: data.type})
 })
 
+Type.get('/get_type', async function (context, next) {
+  context.body = await TypeRepository.findAndCountAllBy({}, {})
+})
+
 export default Type
