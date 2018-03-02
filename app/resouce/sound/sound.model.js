@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize'
 import {database} from '../database'
+import typeModel from '../type/type.model'
+import feelingModel from '../feeling/feeling.model'
 
 let soundModel = database.define('sound', {
   soundId: {
@@ -25,13 +27,12 @@ let soundModel = database.define('sound', {
       key: 'typeId'
     }
   },
-  mean: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
-  sd: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
+  feelingId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'feeling',
+      key: 'feelingId'
+    }
   },
   maleMean: {
     type: Sequelize.DOUBLE,
@@ -80,6 +81,11 @@ let soundModel = database.define('sound', {
   freezeTableName: true,
   paranoid: true
 })
+
+typeModel.hasMany(soundModel, {as: 'sound', foreignKey: 'typeId'})
+feelingModel.hasMany(soundModel, {as: 'sound', foreignKey: 'feelingId'})
+soundModel.belongsTo(typeModel, {as: 'type', foreignKey: 'typeId'})
+soundModel.belongsTo(feelingModel, {as: 'feeling', foreignKey: 'feelingId'})
 
 export default soundModel
 
