@@ -68,7 +68,7 @@ Sound.post('/delete_sound', async function (context, next) {
   }
 })
 
-Sound.post('search_sound', async function (context, next) {
+Sound.post('/search_sound', async function (context, next) {
   let data = context.request.body
   let scope = {
     scope: 'sounddetail'
