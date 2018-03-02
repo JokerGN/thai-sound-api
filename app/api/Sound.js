@@ -14,11 +14,6 @@ Sound.get('/showall', async function (context, next) {
   context.body = await SoundRepository.findAndCountAllBy({}, scope)
 })
 
-Sound.post('/get_sound_id', async function (context, next) {
-  let data = context.request.body
-  context.body = await SoundRepository.findBy({soundId: data.soundId})
-})
-
 Sound.post('/add_sound', Upload, async function (context, next) {
   let data = context.req.body
   let soundData = {
@@ -35,7 +30,7 @@ Sound.post('/add_sound', Upload, async function (context, next) {
     oldmanMean: data.oldmanMean,
     oldmanSD: data.oldmanSD,
   }
-  await SoundRepository.findOrCreate({soundUrl: context.req.file.path},soundData)
+  await SoundRepository.findOrCreate({soundUrl: context.req.file.path, deletedAt: {ne: null}},soundData)
   .spread((sound, created) => {
     if (created) {
       context.body = {
@@ -50,6 +45,27 @@ Sound.post('/add_sound', Upload, async function (context, next) {
       }
     }
   })
+})
+
+Sound.post('/get_sound_id', async function (context, next) {
+  let data = context.request.body
+  context.body = await SoundRepository.findBy({soundId: data.soundId})
+})
+
+Sound.post('/delete_sound', async function (context, next) {
+  let data = context.request.body
+  if (await SoundRepository.deleteBy({soundId: data.soundId})) {
+    context.body = {
+          status: 200,
+          message: "Delete sound success"
+        }
+  } else {
+    context.status = 403
+    context.body = {
+      status : context.status,
+      message: "This file is not on the server"
+    }
+  }
 })
 
 Sound.post('/download', async function (context, next) {
