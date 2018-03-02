@@ -68,6 +68,19 @@ Sound.post('/delete_sound', async function (context, next) {
   }
 })
 
+Sound.post('search_sound', async function (context, next) {
+  let data = context.request.body
+  let scope = {
+    scope: 'sounddetail'
+  }
+  let where = {
+    typeId: data.typeId,
+    feelingId: data.feelingId
+  }
+
+  context.body = await SoundRepository.findAndCountAllBy(where, scope)
+})
+
 Sound.post('/download', async function (context, next) {
   let data = context.request.body
   await Send(context, `./${data.url}`)
