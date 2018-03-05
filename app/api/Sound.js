@@ -18,17 +18,16 @@ Sound.post('/add_sound', Upload, async function (context, next) {
   let data = context.req.body
   let soundData = {
     soundUrl: context.req.file.path,
+    soundName: context.req.file.filename,
     sourceId: data.sourceId,
     typeId: data.typeId,
     feelingId: data.feelingId,
+    mean: data.mean,
+    sd: data.sd,
     maleMean: data.maleMean,
-    maleSD: data.maleSD,
     femaleMean: data.femaleMean,
-    femaleSD: data.femaleSD,
     teenageMean: data.teenageMean,
-    teenageSD: data.teenageSD,
-    oldmanMean: data.oldmanMean,
-    oldmanSD: data.oldmanSD,
+    oldmanMean: data.oldmanMean
   }
   await SoundRepository.findOrCreate({soundUrl: context.req.file.path, deletedAt: {ne: null}},soundData)
   .spread((sound, created) => {

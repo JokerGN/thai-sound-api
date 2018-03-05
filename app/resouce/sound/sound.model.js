@@ -13,6 +13,10 @@ let soundModel = database.define('sound', {
     type: Sequelize.STRING(255),
     allowNull: false
   },
+  soundName: {
+    type: Sequelize.STRING(255),
+    allowNull: false
+  },
   sourceId: {
     type: Sequelize.INTEGER,
     references: {
@@ -34,11 +38,15 @@ let soundModel = database.define('sound', {
       key: 'feelingId'
     }
   },
-  maleMean: {
+  mean: {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
-  maleSD: {
+  sd: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  maleMean: {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
@@ -46,23 +54,11 @@ let soundModel = database.define('sound', {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
-  femaleSD: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
   teenageMean: {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
-  teenageSD: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
   oldmanMean: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
-  oldmanSD: {
     type: Sequelize.DOUBLE,
     allowNull: false
   },
