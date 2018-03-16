@@ -51,6 +51,36 @@ Sound.post('/get_sound_id', async function (context, next) {
   context.body = await SoundRepository.findBy({soundId: data.soundId})
 })
 
+Sound.post('/update', async function (context, next) {
+  let data = context.request.body
+  let soundData = {
+    sourceId: data.sourceId,
+    typeId: data.typeId,
+    feelingId: data.feelingId,
+    mean: data.mean,
+    sd: data.sd,
+    maleMean: data.maleMean,
+    femaleMean: data.femaleMean,
+    teenageMean: data.teenageMean,
+    oldmanMean: data.oldmanMean
+  }
+  await SoundRepository.updateBy({soundId: data.soundId}, soundData)
+  .spread((updated, sound) => {
+    if (sound) {
+      context.body = {
+        status: 200,
+        message: 'update completed'
+      }
+    } else {
+      context.status = 403
+      context.body = {
+        status: 403,
+        message: 'Not found record'
+      }
+    }
+  })
+})
+
 Sound.post('/delete_sound', async function (context, next) {
   let data = context.request.body
   if (await SoundRepository.deleteBy({soundId: data.soundId})) {
