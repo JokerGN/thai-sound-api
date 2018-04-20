@@ -10,7 +10,7 @@ const Upload = Multer({storage: storage}).single('sound')
 Sound.get('/showall', async function (context, next) {
   let data = context.request.query
   let scope = {}
-  if (data) {
+  if (!data) {
     scope = {
       scope: 'sounddetail'
     }
