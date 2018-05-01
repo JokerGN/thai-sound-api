@@ -122,6 +122,13 @@ Sound.post('/search_sound', async function (context, next) {
   context.body = await SoundRepository.findAndCountAllBy(where, scope)
 })
 
+Sound.get('/sound_analysis', async function (context, next) {
+  let scope = {
+    scope: 'soundanalysis'
+  }
+  context.body = await SoundRepository.findBy({}, scope)
+})
+
 Sound.post('/download', async function (context, next) {
   let data = context.request.body
   await Send(context, `./${data.url}`)
