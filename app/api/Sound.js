@@ -8,20 +8,7 @@ const Sound = new Router()
 const Upload = Multer({storage: storage}).single('sound')
 
 Sound.get('/showall', async function (context, next) {
-  let data = context.request.query
-  let scope = {}
-  if (!data) {
-    scope = {
-      scope: 'sounddetail'
-    }
-  } else {
-    scope = {
-      scope: 'sounddetail',
-      offset: parseInt(data.offset),
-      limit: parseInt(data.limit)
-    }
-  }
-  context.body = await SoundRepository.findAndCountAllBy({}, scope)
+  context.body = await SoundRepository.findAndCountAllBy({}, {scope: 'sounddetail'})
 })
 
 Sound.post('/add_sound', Upload, async function (context, next) {
@@ -111,8 +98,6 @@ Sound.post('/search_sound', async function (context, next) {
   let data = context.request.body
   let scope = {
     scope: 'sounddetail',
-    offset: parseInt(data.offset),
-    limit: parseInt(data.limit)
   }
   let where = {
     typeId: data.typeId,
