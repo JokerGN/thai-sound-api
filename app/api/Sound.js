@@ -11,11 +11,11 @@ Sound.get('/showall', async function (context, next) {
   context.body = await SoundRepository.findAndCountAllBy({}, {scope: 'sounddetail'})
 })
 
-Sound.post('/add_sound', Upload, async function (context, next) {
-  let data = context.req.body
+Sound.post('/add_sound', async function (context, next) {
+  let data = context.request.body
   let soundData = {
-    soundUrl: context.req.file.path,
-    soundName: context.req.file.filename,
+    soundUrl: data.soundUrl,
+    soundName: data.soundName,
     sourceId: data.sourceId,
     typeId: data.typeId,
     feelingId: data.feelingId,
@@ -26,12 +26,31 @@ Sound.post('/add_sound', Upload, async function (context, next) {
     teenageMean: data.teenageMean,
     oldmanMean: data.oldmanMean
   }
-  await SoundRepository.findOrCreate({soundUrl: context.req.file.path, deletedAt: {ne: null}},soundData)
+  await SoundRepository.findOrCreate({soundUrl: data.soundUrl, deletedAt: {ne: null}},soundData)
   .spread((sound, created) => {
     if (created) {
       context.body = {
         status: 200,
         message: sound
+      }
+    } else {
+      context.status = 403
+      context.body = {
+        status : context.status,
+        message: "This file already in server"
+      }
+    }
+  })
+})
+
+Sound.post('/upload', Upload, async function (context, next) {
+  let path = context.req.file.path.replace('\\','/')
+  await SoundRepository.findBy({soundUrl: path, deletedAt: {ne: null}})
+  .spread((sound) => {
+    if (!sound) {
+      context.body = {
+        status: 200,
+        message: path
       }
     } else {
       context.status = 403
