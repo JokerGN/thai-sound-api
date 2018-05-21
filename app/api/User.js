@@ -30,7 +30,6 @@ User.post('/change_status', async function (context, next) {
     if (user) {
       if (user.status == 'block') {
         UserRepository.updateBy({email: data.email}, {status: 'active'})
-        UserRepository.updateBy({email: data.email}, {status: 'active'})
       } else {
         UserRepository.updateBy({email: data.email}, {status: 'block'})
       }
