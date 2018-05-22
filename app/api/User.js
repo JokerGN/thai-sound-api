@@ -18,6 +18,11 @@ User.post('/update', async function (context, next) {
   context.body = await UserRepository.updateBy({email: data.email}, updateData)
 })
 
+User.post('/get_user_id', async function (context, next) {
+  let data = context.request.body
+  context.body = await UserRepository.findBy({userId: data.userId})
+})
+
 User.post('/delete', async function (context,next) {
   let data = context.request.body
   context.body = await UserRepository.deleteBy({email: data.email})
