@@ -15,17 +15,42 @@ User.post('/update', async function (context, next) {
     citizenId: data.citizenId,
     address: data.address
   }
-  context.body = await UserRepository.updateBy({email: data.email}, updateData)
+  await UserRepository.updateBy({email: data.email}, updateData)
+  .spread((updated, sound) => {
+    if (sound) {
+      context.body = {
+        status: 200,
+        message: 'update completed'
+      }
+    } else {
+      context.status = 403
+      context.body = {
+        status: 403,
+        message: 'Not found record'
+      }
+    }
+  })
 })
 
 User.post('/get_user_id', async function (context, next) {
   let data = context.request.body
-  context.body = await UserRepository.findBy({userId: data.userId})
+  context.body = await UserRepository.findBy({userId: data.Id})
 })
 
 User.post('/delete', async function (context,next) {
   let data = context.request.body
-  context.body = await UserRepository.deleteBy({email: data.email})
+  if (await UserRepository.deleteBy({email: data.email})) {
+    context.body = {
+          status: 200,
+          message: "Delete user success"
+        }
+  } else {
+    context.status = 403
+    context.body = {
+      status : context.status,
+      message: "This record is not on the server"
+    }
+  }
 })
 
 User.post('/change_status', async function (context, next) {
