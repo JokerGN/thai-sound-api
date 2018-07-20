@@ -18,7 +18,7 @@ soundModel.addScope('sounddetail', {
     },
     {
       as: 'source',
-      model: sourcemModel,
+      model: sourceModel,
       required: true
     }
   ]
