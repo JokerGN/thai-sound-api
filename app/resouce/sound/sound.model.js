@@ -84,7 +84,7 @@ feelingModel.hasMany(soundModel, {as: 'sound', foreignKey: 'feelingId'})
 sourceModel.hasMany(soundModel, {as: 'sound', foreignKey: 'sourceId'})
 soundModel.belongsTo(typeModel, {as: 'type', foreignKey: 'typeId'})
 soundModel.belongsTo(feelingModel, {as: 'feeling', foreignKey: 'feelingId'})
-soundModel.belongsTo(soundModel, {as: 'source', foreignKey: 'sourceId'})
+soundModel.belongsTo(sourceModel, {as: 'source', foreignKey: 'sourceId'})
 
 export default soundModel
 
