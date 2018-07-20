@@ -2,6 +2,7 @@ import Sequelize from 'sequelize'
 import {database} from '../database'
 import typeModel from '../type/type.model'
 import feelingModel from '../feeling/feeling.model'
+import sourceModel from '../source/source.model'
 
 let soundModel = database.define('sound', {
   soundId: {
@@ -80,8 +81,10 @@ let soundModel = database.define('sound', {
 
 typeModel.hasMany(soundModel, {as: 'sound', foreignKey: 'typeId'})
 feelingModel.hasMany(soundModel, {as: 'sound', foreignKey: 'feelingId'})
+sourceModel.hasMany(soundModel, {as: 'sound', foreignKey: 'sourceId'})
 soundModel.belongsTo(typeModel, {as: 'type', foreignKey: 'typeId'})
 soundModel.belongsTo(feelingModel, {as: 'feeling', foreignKey: 'feelingId'})
+soundModel.belongsTo(soundModel, {as: 'source', foreignKey: 'sourceId'})
 
 export default soundModel
 
